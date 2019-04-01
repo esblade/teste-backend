@@ -1,0 +1,84 @@
+<html>
+    <head>
+        <title>Relatório</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.min.js"></script>
+    </head>
+    <body>
+        <div class="chartjs-wrapper">
+            <canvas id="chartjs-2" class="chartjs" width="undefined" height="undefined"></canvas>
+        
+            <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+            <script> 
+                var dataDescription = [];
+                var dataAverage = [];
+                var dataColor = [];
+
+                $.ajax({
+                    type: "GET",
+                    url: "api",
+                }).done(function (data, textStatus, jqXHR) {
+                    for (i = 0; i < data.regionals.length; i++) { 
+                        dataDescription[i] = data.regionals[i].description;
+                        dataAverage[i] = data.regionals[i].average;
+                        dataColor[i] = getRandomColor();
+                    }
+                    mediaNacional = data.mediaNacional;
+                    dataDescription[data.regionals.length + 1] = "Média Nacional";
+                    dataAverage[data.regionals.length + 1] = mediaNacional;
+                    dataColor[data.regionals.length + 1] = getRandomColor();
+
+                    new Chart(document.getElementById("chartjs-2"), {
+                        "type": "horizontalBar",
+                        "data": {
+                            "labels": dataDescription,
+                            "datasets": [{
+                                "label": "Média de ex alunos que ainda estudam",
+                                "data": dataAverage,
+                                "fill": false,
+                                "borderWidth": 1,
+                                "backgroundColor": dataColor
+                            }]
+                        },
+                        "options": {
+                            scales: {
+                                xAxes: [{
+                                    ticks: {
+                                        min: 0,
+                                        max: 100,//this.max,// Your absolute max value
+                                        callback: function (value) {
+                                            return value + '%';
+                                        },
+                                    },
+                                    scaleLabel: {
+                                        display: true,
+                                    },
+                                }],
+                            },
+                            tooltips: {
+                                callbacks: {
+                                  label: function(tooltipItem, data) {
+                                    var dataset = data.datasets[tooltipItem.datasetIndex];
+                                    var currentValue = dataset.data[tooltipItem.index];
+                                    return currentValue.toFixed(2) + "%";
+                                  }
+                                }
+                            }
+                        }
+                    });
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    return false;
+                });
+                
+                function getRandomColor() {
+                    var letters = '0123456789ABCDEF';
+                    var color = '#';
+                    for (var i = 0; i < 6; i++) {
+                      color += letters[Math.floor(Math.random() * 16)];
+                    }
+                    return color;
+                }
+            </script>
+        </div>
+    </body>
+</html>
