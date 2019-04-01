@@ -9,7 +9,7 @@ composer install
 @src/settings.php [password] = alterar senha do banco de dados
 
 # Erro app.log
-Caso dê erro no arquivo app.log utilizando linux, chmod 777 @api/logs/
+Caso dê erro no arquivo app.log utilizando linux, chmod 777 @app/logs/
 
 # Arquivos
 @src/settings.php - usado para informações do banco
