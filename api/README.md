@@ -25,3 +25,8 @@ Caso dê erro no arquivo app.log utilizando linux, chmod 777 @api/logs/
 @public/view.html - pagina de exibição de relatorio
 
 @public/json.html - pagina da api em json
+
+# Paginas
+API - teste-backend/app/public/api
+
+VIEW - teste-backend/app/public/
